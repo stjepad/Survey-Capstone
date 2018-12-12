@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace SurveyApp.Models
 {
-    public class Answers
+    public class Answer
     {
         [Key]
-        public int AnswersId { get; set; }
+        public int AnswerId { get; set; }
 
         [Required]
-        public string Answer { get; set; }
+        public string Content { get; set; }
 
         // Fk 
         [Required]
         public int QuestionId { get; set; }
 
-        [Required]
+       
         public Question Question { get; set; }
+
+        public virtual ICollection<AnswerSurveyInstance> AnswerSurveyInstances { get; set; }
     }
 }

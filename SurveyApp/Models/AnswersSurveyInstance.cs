@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApp.Models
 {
-    public class AnswersSurveyInstance
+    public class AnswerSurveyInstance
     {
         [Key]
         public int AnswerSurveyInstanceId { get; set; }
@@ -19,8 +19,8 @@ namespace SurveyApp.Models
         // Fk
 
         [Required]
-        public int AnswersId { get; set; }
+        public int AnswerId { get; set; }
 
-        public Answers Answers { get; set; }
+        public Answer Answer { get; set; }
     }
 }

@@ -23,17 +23,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bangazon.Data
+namespace SurveyApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<Answers> Answers { get; set; }
-        public DbSet<ProductType> ProductType { get; set; }
-        public DbSet<PaymentType> PaymentType { get; set; }
-        public DbSet<Order> Order { get; set; }
-        public DbSet<OrderProduct> OrderProduct { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<AnswerSurveyInstance> AnswersSurveyInstances { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<SurveyInstance> SurveyInstances { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,35 +41,35 @@ namespace Bangazon.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-            modelBuilder.Entity<Order>()
-                .Property(b => b.DateCreated)
+            modelBuilder.Entity<SurveyInstance>()
+                .Property(si => si.DateCreated)
                 .HasDefaultValueSql("GETDATE()");
 
-            // Restrict deletion of related order when OrderProducts entry is removed
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.OrderProducts)
-                .WithOne(l => l.Order)
+            //// Restrict deletion of related order when OrderProducts entry is removed
+            modelBuilder.Entity<Answer>()
+                .HasMany(asi => asi.AnswerSurveyInstances)
+                .WithOne(a => a.Answer)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Product>()
-                .Property(b => b.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<Product>()
+            //    .Property(b => b.DateCreated)
+            //    .HasDefaultValueSql("GETDATE()");
 
-            // Restrict deletion of related product when OrderProducts entry is removed
-            modelBuilder.Entity<Product>()
-                .HasMany(o => o.OrderProducts)
-                .WithOne(l => l.Product)
+            //// Restrict deletion of related product when OrderProducts entry is removed
+            modelBuilder.Entity<SurveyInstance>()
+                .HasMany(asi => asi.AnswersSurveyInstances)
+                .WithOne(si => si.SurveyInstance)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<PaymentType>()
-                .Property(b => b.DateCreated)
-                .HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<PaymentType>()
+            //    .Property(b => b.DateCreated)
+            //    .HasDefaultValueSql("GETDATE()");
 
             ApplicationUser user = new ApplicationUser
             {
                 FirstName = "admin",
                 LastName = "admin",
-                StreetAddress = "123 Infinity Way",
+                CompanyName = "Tailgate Brewery",
                 UserName = "admin@admin.com",
                 NormalizedUserName = "ADMIN@ADMIN.COM",
                 Email = "admin@admin.com",
@@ -82,367 +82,214 @@ namespace Bangazon.Data
             user.PasswordHash = passwordHash.HashPassword(user, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(user);
 
-            modelBuilder.Entity<PaymentType>().HasData(
-                new PaymentType()
+
+            // Survey data 
+
+            modelBuilder.Entity<Survey>().HasData(
+                new Survey()
                 {
-                    PaymentTypeId = 1,
+                    SurveyId = 1,
                     UserId = user.Id,
-                    Description = "American Express",
-                    AccountNumber = "86753095551212"
-                },
-                new PaymentType()
-                {
-                    PaymentTypeId = 2,
-                    UserId = user.Id,
-                    Description = "Discover",
-                    AccountNumber = "4102948572991"
+                    Name = "Weekend FeedbacK",
+                    Published = false,
                 }
             );
 
-            modelBuilder.Entity<ProductType>().HasData(
-                new ProductType()
+            // SurveyInstance data
+
+            modelBuilder.Entity<SurveyInstance>().HasData(
+                new SurveyInstance()
                 {
-                    ProductTypeId = 1,
-                    Label = "Sporting Goods"
-                },
-                new ProductType()
-                {
-                    ProductTypeId = 2,
-                    Label = "Appliances"
+                    SurveyInstanceId = 1,
+                    SurveyId = 1
                 }
+                );
+
+
+            //Question data
+
+            modelBuilder.Entity<Question>().HasData(
+                new Question()
+                {
+                    QuestionId = 1,
+                    Content = "How many people were in your party?",
+                    SurveyId = 1
+                },
+                new Question()
+                {
+                QuestionId = 2,
+                    Content = "How many beers did you drink?",
+                    SurveyId = 1
+                },
+                new Question()
+                {
+                QuestionId = 3,
+                    Content = "How much time did you spend here?",
+                    SurveyId = 1
+                },
+                new Question()
+                {
+                QuestionId = 4,
+                    Content = "Did you order food?",
+                    SurveyId = 1
+                },
+                new Question()
+                {
+                    QuestionId = 5,
+                    Content = "How would you rate your experience?",
+                    SurveyId = 1
+                }
+
+            );
+                
+            // Answers data
+
+            modelBuilder.Entity<Answer>().HasData(
+
+                // "How many people were in your party?"
+                new Answer()
+                {
+                    AnswerId = 1,
+                    Content = "1",
+                    QuestionId = 1
+                },
+                new Answer()
+                {
+                AnswerId = 2,
+                    Content = "3",
+                    QuestionId = 1
+                },
+                new Answer()
+                {
+                AnswerId = 3,
+                    Content = "5",
+                    QuestionId = 1
+                },
+                new Answer()
+                {
+                AnswerId = 4,
+                    Content = "10",
+                    QuestionId = 1
+                },
+
+                // "How many beers did you drink?"
+
+                new Answer()
+                {
+                    AnswerId = 5,
+                    Content = "1 - 2",
+                    QuestionId = 2
+                },
+                new Answer()
+                {
+                    AnswerId = 6,
+                    Content = "3 - 5",
+                    QuestionId = 2
+                },
+                new Answer()
+                {
+                    AnswerId = 7,
+                    Content = "More than 6",
+                    QuestionId = 2
+                },
+                new Answer()
+                {
+                    AnswerId = 8,
+                    Content = "I did not drink",
+                    QuestionId = 2
+                },
+
+                // "How much time did you spend here?"
+
+                new Answer()
+                {
+                    AnswerId = 9,
+                    Content = " 30 minutes",
+                    QuestionId = 3
+                },
+                new Answer()
+                {
+                    AnswerId = 10,
+                    Content = " 1 hour",
+                    QuestionId = 3
+                },
+                new Answer()
+                {
+                    AnswerId = 11,
+                    Content = " 2 - 3 hours",
+                    QuestionId = 3
+                },
+                new Answer()
+                {
+                    AnswerId = 12,
+                    Content = "More than 3 hours",
+                    QuestionId = 3
+                },
+
+                // "Did you order food?"
+
+                new Answer()
+                {
+                    AnswerId = 13,
+                    Content = "No",
+                    QuestionId = 4
+                },
+                new Answer()
+                {
+                    AnswerId = 14,
+                    Content = " Appetizers",
+                    QuestionId = 4
+                },
+                new Answer()
+                {
+                    AnswerId = 15,
+                    Content = "Main course",
+                    QuestionId = 4
+                },
+                new Answer()
+                {
+                    AnswerId = 16,
+                    Content = "Appetizer and main course",
+                    QuestionId = 4
+                },
+                // "How would you rate your experience?"
+
+                new Answer()
+                {
+                    AnswerId = 17,
+                    Content = "Fantastic",
+                    QuestionId = 5
+                },
+                new Answer()
+                {
+                    AnswerId = 18,
+                    Content = " Good",
+                    QuestionId = 5
+                },
+                new Answer()
+                {
+                    AnswerId = 19,
+                    Content = "Poor",
+                    QuestionId = 5
+                },
+                new Answer()
+                {
+                    AnswerId = 20,
+                    Content = "I am not comming back",
+                    QuestionId = 5
+                }
+
             );
 
-            modelBuilder.Entity<Product>().HasData(
-                new Product()
-                {
-                    ProductId = 1,
-                    ProductTypeId = 1,
-                    UserId = user.Id,
-                    Description = "It flies high",
-                    Title = "Kite",
-                    Quantity = 100,
-                    Price = 2.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 2,
-                    ProductTypeId = 2,
-                    UserId = user.Id,
-                    Description = "It rolls fast",
-                    Title = "Wheelbarrow",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 3,
-                    ProductTypeId = 3,
-                    UserId = user.Id,
-                    Description = "Black- not much RAM",
-                    Title = "MacBook Air",
-                    Quantity = 5,
-                    Price = 1200.00,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-
-                new Product()
-                {
-                    ProductId = 4,
-                    ProductTypeId = 3,
-                    UserId = user.Id,
-                    Description = "White TON OF RAM",
-                    Title = "MacBook Pro",
-                    Quantity = 5,
-                    Price = 2000.00,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 5,
-                    ProductTypeId = 3,
-                    UserId = user.Id,
-                    Description = "Black - Cute",
-                    Title = "Dell",
-                    Quantity = 5,
-                    Price = 1000.00,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 6,
-                    ProductTypeId = 3,
-                    UserId = user.Id,
-                    Description = "Orange",
-                    Title = "Linux",
-                    Quantity = 5,
-                    Price = 500.00,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 7,
-                    ProductTypeId = 3,
-                    UserId = user.Id,
-                    Description = "Not much RAM",
-                    Title = "HP",
-                    Quantity = 5,
-                    Price = 300.00,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 8,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Chocolate",
-                    Title = "Protein Powder - Chocolate",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 9,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Vanilla",
-                    Title = "Protein Powder - Vanilla",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 10,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Grape",
-                    Title = "Protein Powder- Grape ",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Nashville",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 11,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Strawberry",
-                    Title = "Protein Powder - Strawberry",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 12,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Black",
-                    Title = "Yoga Pants - Black",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 13,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "White",
-                    Title = "Yoga Pants - White",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 14,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Red",
-                    Title = "Yoga Pants - REd",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 15,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Green",
-                    Title = "Yoga Pants - Green",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 16,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Purple",
-                    Title = "Yoga Pants - Purple",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 17,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "5 lb",
-                    Title = "Weights -5lb",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 18,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "10 lb",
-                    Title = "Weights -10 lb",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 19,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "15 lb",
-                    Title = "Weights -15 lb",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 20,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "8 lb",
-                    Title = "Weights -8 lb",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Franklin",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 21,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "20 lb",
-                    Title = "Weights -20lb",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Cinci",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 22,
-                    ProductTypeId = 2,
-                    UserId = user.Id,
-                    Description = "25 lb",
-                    Title = "Weights -25 lb",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Cinci",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 23,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "round and yellow",
-                    Title = "Tennis Ball",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Cinci",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 24,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Sleek",
-                    Title = "Babolat Tennis Racket",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Cinci",
-                    ImagePath = "www.google.com"
-                },
-                new Product()
-                {
-                    ProductId = 25,
-                    ProductTypeId = 4,
-                    UserId = user.Id,
-                    Description = "Rounded",
-                    Title = "Wilson Tennis Racket",
-                    Quantity = 5,
-                    Price = 29.99,
-                    City = "Cinci",
-                    ImagePath = "www.google.com"
+            modelBuilder.Entity<AnswerSurveyInstance>().HasData(
+                new AnswerSurveyInstance()
+                {   
+                    AnswerSurveyInstanceId = 1,
+                    SurveyInstanceId = 1,
+                    AnswerId = 1
                 }
+                
             );
-
-            modelBuilder.Entity<Order>().HasData(
-                new Order()
-                {
-                    OrderId = 1,
-                    UserId = user.Id,
-                    PaymentTypeId = null
-                }
-            );
-
-            modelBuilder.Entity<OrderProduct>().HasData(
-                new OrderProduct()
-                {
-                    OrderProductId = 1,
-                    OrderId = 1,
-                    ProductId = 1
-                }
-            );
-
-            modelBuilder.Entity<OrderProduct>().HasData(
-                new OrderProduct()
-                {
-                    OrderProductId = 2,
-                    OrderId = 1,
-                    ProductId = 2
-                }
-            );
-
         }
     }
 }

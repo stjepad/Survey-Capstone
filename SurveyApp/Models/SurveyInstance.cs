@@ -21,5 +21,7 @@ namespace SurveyApp.Models
 
         [Required]
         public Survey Survey { get; set; }
+
+        public virtual ICollection<AnswerSurveyInstance> AnswersSurveyInstances { get; set; }
     }
 }

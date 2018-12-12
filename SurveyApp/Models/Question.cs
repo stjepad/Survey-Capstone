@@ -18,7 +18,7 @@ namespace SurveyApp.Models
         [Required]
         public int SurveyId { get; set; }
 
-        [Required]
+        
         public Survey Survey { get; set; }
     }
 }
