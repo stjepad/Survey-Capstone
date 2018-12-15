@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,29 +10,23 @@ using SurveyApp.Models;
 
 namespace SurveyApp.Controllers
 {
-    public class SurveysController : Controller
+    public class AnswersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-
-        public SurveysController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+        public AnswersController(ApplicationDbContext context)
         {
-            _userManager = userManager;
             _context = context;
         }
 
-        // GET: Surveys
+        // GET: Answers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Surveys.Include(s => s.User);
+            var applicationDbContext = _context.Answers.Include(a => a.Question);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Surveys/Details/5
+        // GET: Answers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,52 +34,42 @@ namespace SurveyApp.Controllers
                 return NotFound();
             }
 
-            var survey = await _context.Surveys
-                
-                .Include(s => s.User)
-                .Include(q => q.Questions)
-                    .ThenInclude(a => a.Answers)
-                .FirstOrDefaultAsync(m => m.SurveyId == id);
-            if (survey == null)
+            var answer = await _context.Answers
+                .Include(a => a.Question)
+                .FirstOrDefaultAsync(m => m.AnswerId == id);
+            if (answer == null)
             {
                 return NotFound();
             }
 
-            return View(survey);
+            return View(answer);
         }
 
-        // GET: Surveys/Create
+        // GET: Answers/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "Content");
             return View();
         }
 
-        // POST: Surveys/Create
+        // POST: Answers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SurveyId,Name,Published,UserId")] Survey survey)
+        public async Task<IActionResult> Create([Bind("AnswerId,Content,QuestionId")] Answer answer)
         {
-
-            ModelState.Remove("User");
             if (ModelState.IsValid)
             {
-
-                survey.User = await GetCurrentUserAsync();
-
-                _context.Add(survey);
+                _context.Add(answer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            return View(survey);
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "Content", answer.QuestionId);
+            return View(answer);
         }
 
-
-
-        // GET: Surveys/Edit/5
+        // GET: Answers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,38 +77,37 @@ namespace SurveyApp.Controllers
                 return NotFound();
             }
 
-            var survey = await _context.Surveys.FindAsync(id);
-            if (survey == null)
+            var answer = await _context.Answers.FindAsync(id);
+            if (answer == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            return View(survey);
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "Content", answer.QuestionId);
+            return View(answer);
         }
 
-        // POST: Surveys/Edit/5
+        // POST: Answers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SurveyId,Name,Published,UserId")] Survey survey)
+        public async Task<IActionResult> Edit(int id, [Bind("AnswerId,Content,QuestionId")] Answer answer)
         {
-            if (id != survey.SurveyId)
+            if (id != answer.AnswerId)
             {
                 return NotFound();
             }
-
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(survey);
+                    _context.Update(answer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SurveyExists(survey.SurveyId))
+                    if (!AnswerExists(answer.AnswerId))
                     {
                         return NotFound();
                     }
@@ -136,11 +118,11 @@ namespace SurveyApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            return View(survey);
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "Content", answer.QuestionId);
+            return View(answer);
         }
 
-        // GET: Surveys/Delete/5
+        // GET: Answers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,31 +130,31 @@ namespace SurveyApp.Controllers
                 return NotFound();
             }
 
-            var survey = await _context.Surveys
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.SurveyId == id);
-            if (survey == null)
+            var answer = await _context.Answers
+                .Include(a => a.Question)
+                .FirstOrDefaultAsync(m => m.AnswerId == id);
+            if (answer == null)
             {
                 return NotFound();
             }
 
-            return View(survey);
+            return View(answer);
         }
 
-        // POST: Surveys/Delete/5
+        // POST: Answers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var survey = await _context.Surveys.FindAsync(id);
-            _context.Surveys.Remove(survey);
+            var answer = await _context.Answers.FindAsync(id);
+            _context.Answers.Remove(answer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SurveyExists(int id)
+        private bool AnswerExists(int id)
         {
-            return _context.Surveys.Any(e => e.SurveyId == id);
+            return _context.Answers.Any(e => e.AnswerId == id);
         }
     }
 }

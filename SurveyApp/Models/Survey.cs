@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApp.Models
 {
@@ -21,6 +22,8 @@ namespace SurveyApp.Models
 
         [Required]
         public ApplicationUser User { get; set; }
+
+        public virtual ICollection<Question> Questions { get; set; }
 
     }
 }

@@ -25,5 +25,7 @@ namespace SurveyApp.Models
         public string CompanyName { get; set; }
 
         public virtual ICollection<Survey> Surveys { get; set; }
+
+        public string FullName { get { return FirstName + " " + LastName; } }
     }
 }
