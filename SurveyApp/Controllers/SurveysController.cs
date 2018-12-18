@@ -136,6 +136,7 @@ namespace SurveyApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
             return View(survey);
         }

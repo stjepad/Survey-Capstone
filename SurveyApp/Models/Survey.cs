@@ -25,5 +25,7 @@ namespace SurveyApp.Models
 
         public virtual ICollection<Question> Questions { get; set; }
 
+        public virtual ICollection<SurveyInstance> SurveyInstances { get; set; }
+
     }
 }
