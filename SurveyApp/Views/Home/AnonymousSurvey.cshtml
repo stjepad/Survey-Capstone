@@ -6,33 +6,48 @@
 }
 
 <h2>Anonymous Survey</h2>
+        <div>
+            <form asp-action="AnonymousSurvey" asp-route-id="@Model.Survey.SurveyId">
+                @for (var i = 0; i < Model.Questions.Count; i++)
+                {
+                    <h4>@Model.Questions[i].Content</h4>
 
-<div>
-    <form asp-action="AnonymousSurvey" asp-route-id="@Model.Survey.SurveyId">
+                    <input type="hidden" asp-for="@Model.Answers[i].AnswerId" value="@Model.Survey.SurveyId" />
+                    <select asp-for="@Model.Answers[i].AnswerId" class="form-control"
+                            asp-items="@(new SelectList(Model.Questions[i].Answers, "AnswerId", "Content"))"></select>
+                }
+                <button type="submit" class="btn btn-primary">Submit Survey</button>
+            </form>
+        </div>
+    @*@
+        HARD WAY: works
+        <div>
+            <form asp-action="AnonymousSurvey" asp-route-id="@Model.Survey.SurveyId">
 
-        @* Here I use a for loop so that I have easy access to an incrementer *@
-        @for (var i = 0; i < Model.Questions.Count; i++)
-        {
-            <div>
-                @*This makes the question content print out by using bracket notation to access this questions specific content *@
-                <h4>@Model.Questions[i].Content</h4>
-            
-                <div class="form-group">
-                    @* 
-                        1. This is a select, that holds the values of the viewmodel dictionary as its asp-items (options). 
-                            How this works: 
-                            I use the incrementer to give me the string value of the question.Content. This is the key on the dictionary for the List of SelectListItem (answer options) that is the value.
+                 Here I use a for loop so that I have easy access to an incrementer
+                @for (var i = 0; i < Model.Questions.Count; i++)
+                {
+                    <div>
+                        This makes the question content print out by using bracket notation to access this questions specific content
+                        <h4>@Model.Questions[i].Content</h4>
 
-                        2. When the user selects an option from the drop down, I have set the value of the select list item to be the valuse of an AnswerSurveyInstance.AnswerId. The incrementer build the list on the viewmodel, and inserts a value into each AnserSurveyInstance.
-                    *@ 
-                    <select asp-for="@Model.Answers[i].AnswerId" class="form-control" asp-items="@Model.superMetaShit[Model.Questions[i].Content]"></select>
-                  
-                </div>
+                        <div class="form-group">
 
-            </div>
+                                1. This is a select, that holds the values of the viewmodel dictionary as its asp-items (options).
+                                    How this works:
+                                    I use the incrementer to give me the string value of the question.Content. This is the key on the dictionary for the List of SelectListItem (answer options) that is the value.
 
-        }
-        <button type="submit" class="btn btn-primary">Submit Survey</button>
-    </form>
+                                2. When the user selects an option from the drop down, I have set the value of the select list item to be the valuse of an AnswerSurveyInstance.AnswerId. The incrementer build the list on the viewmodel, and inserts a value into each AnserSurveyInstance.
 
-</div>
+                            <select asp-for="@Model.Answers[i].AnswerId" class="form-control" asp-items="@Model.superMetaShit[Model.Questions[i].Content]"></select>
+
+                        </div>
+
+                    </div>
+
+                }
+                <button type="submit" class="btn btn-primary">Submit Survey</button>
+            </form>
+
+        </div>
+*@
