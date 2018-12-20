@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SurveyApp.Data;
 using SurveyApp.Models;
+using SurveyApp.Models.SurveyDetailsViewModels;
 
 namespace SurveyApp.Controllers
 {
@@ -54,6 +55,41 @@ namespace SurveyApp.Controllers
 
             return View(survey);
         }
+
+        //Survey results
+        // GET: Surveys/SurveyDetails/5
+        public async Task<IActionResult> SurveyDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var survey = await _context.Surveys
+                .Include(s => s.User)
+                .Include(q => q.Questions)
+                .ThenInclude(q => q.Answers)
+                .ThenInclude(a => a.AnswerSurveyInstances)
+                .FirstOrDefaultAsync(m => m.SurveyId == id);
+
+            if (survey == null)
+            {
+                return NotFound();
+            }
+
+            SruveyDetailsViewModel viewModel = new SruveyDetailsViewModel
+            {
+                Survey = survey,
+                Questions = survey.Questions.ToList()
+            };
+
+            ViewData["scripts"] = new List<string>() {
+                "ChartData"
+            };
+
+            return View(viewModel);
+        }
+
 
         // GET: Surveys/Create
         public IActionResult Create()

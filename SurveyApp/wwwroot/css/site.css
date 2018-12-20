@@ -28,6 +28,13 @@ body {
     margin: 15px;
 }
 
+
+.question-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

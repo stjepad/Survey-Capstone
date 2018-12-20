@@ -17,6 +17,6 @@ namespace SurveyApp.Models.AnonymousSurveyViewModels
         
         public List<AnswerSurveyInstance> Answers { get; set; }
 
-        public Dictionary<string, List<SelectListItem>> superMetaShit { get; set; }
+        //public Dictionary<string, List<SelectListItem>> superMetaShit { get; set; }
     }
 }
