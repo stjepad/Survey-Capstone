@@ -238,11 +238,16 @@ namespace SurveyApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+         
+
+            //code to remove answerFK
             var question = await _context.Questions.Include(q => q.Answers).Include(q => q.Survey).SingleOrDefaultAsync(q => q.QuestionId == id);
             foreach (Answer answer in question.Answers)
             {
                 _context.Remove(answer);
             }
+
+
 
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();

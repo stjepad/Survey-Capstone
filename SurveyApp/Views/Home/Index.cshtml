@@ -3,32 +3,33 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<h4>tentacles!</h4>
 
 
-<table class="table">
-    <thead>
+
+@*<table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-               
-                <td>
+        </tr>*@
+
+<div class="surveyIndexContainer">
+    @foreach (var item in Model)
+    {
+        @*<tr>*@
+
+        <div class="surveyNameButton">
+            @*<td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
+                </td>*@
 
 
-             @*The asp-action routes to the AnonymousSurvey.cshtml according to the SurveyId*@
-                <td>
-                    <a asp-action="AnonymousSurvey" asp-route-id="@item.SurveyId">Take Survey</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            @*The asp-action routes to the AnonymousSurvey.cshtml according to the SurveyId*@
+            @*<td>*@
+            <a asp-action="AnonymousSurvey" class="btn btn-info surveyIndexButton" asp-route-id="@item.SurveyId"> @Html.DisplayFor(modelItem => item.Name)</a>
+            @*</td>*@
+        </div>
+        @*</tr>*@
+    }
+</div>
+@*</table>*@

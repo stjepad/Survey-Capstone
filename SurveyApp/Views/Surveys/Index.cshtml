@@ -4,13 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<script src="~/js/CheckBoxSurvey.js" type="text/javascript"></script>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<h2 class="surveysTitle">Surveys</h2>
+
+<p class="createSurveyButton">
+    <a class="btn btn-info surveySurveyButton"  asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+<div class="table">
+    @*<thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Published)
@@ -23,26 +25,28 @@
             </th>
             <th></th>
         </tr>
-    </thead>
-    <tbody>
+    </thead>*@
+    
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Published)
-            </td>
-            <td>
+        <div class="surveysContent">
+            <div class="surveysHeader">
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FullName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SurveyId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SurveyId">Q & A</a> |
-                <a asp-action="Delete" asp-route-id="@item.SurveyId">Delete</a> |
-                <a asp-action="SurveyDetails" asp-route-id="@item.SurveyId">Survey Results</a>
-            </td>
-        </tr>
+            </div>
+            <div class="surveysPublished">
+                @*@Html.DisplayFor(modelItem => item.Published)*@
+                @Html.CheckBoxFor(modelItem => item.Published)
+
+                @Html.DisplayNameFor(model => model.Published)
+            </div>
+            <div>
+                @*@Html.DisplayFor(modelItem => item.User.FullName)*@
+            </div>
+            <div>
+                <a asp-action="Edit" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Edit</a> 
+                <a asp-action="Delete" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Delete</a> 
+                <a asp-action="Details" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Q & A</a> 
+                <a asp-action="SurveyDetails" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Survey Results</a>
+            </div>
+        </div>
 }
-    </tbody>
-</table>
+</div>

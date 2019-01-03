@@ -42,3 +42,182 @@ body {
         display: none;
     }
 }
+
+
+/*Index anon survey page*/
+.surveyNameButton {
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    display:flex;
+    margin:7px;
+    
+}
+.surveyIndexButton {
+    background-color: #1C1F33;
+    /*#F7DD72;*/
+    width: 350px;
+    height: 60px;
+    font-size: x-large;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    font-weight: bold;
+}
+
+.body-content {
+    margin-top: 20px;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*.surveyIndexContainer {
+    background-color: whitesmoke;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 5px;
+}*/
+
+body {
+    /*background-image: url("../images/outOfFocus.jpeg");*/
+    background-color: white;
+}
+
+/*@media only screen and (max-width: 600px) {
+    body {
+        background-image: url("../images/blueCircles.jpg");
+        background-size: 100%;
+        background-color: #cccccc;
+    }*/
+.navbar-toggle {
+    background-color: #1C1F33;
+}
+.navbar {
+    background-color: #1C1F33;
+}
+
+
+
+
+
+/*Anonymous survey view*/
+
+.anonymousSurveyContainer {
+    
+    background-color: whitesmoke;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.anonymousSurveyButton {
+    background-color: #1C1F33;
+    /*#F7DD72;*/
+    width: 265px;
+    height: 60px;
+    font-size: x-large;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    margin-top: 1em;
+   
+}
+.form {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-control {
+margin-top: 1em;
+margin-bottom: 1em;
+}
+
+/*results page*/
+
+.resultsHeader {
+    text-align:center;
+}
+.fullDivSurveyDetails {
+    justify-content:center;
+    
+}
+.resultsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1em;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    /*box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.4);*/
+}
+
+.ulHidden {
+    list-style-type: none;
+    height:1em;
+}
+
+.questionContent {
+    justify-content: center;
+    display: flex;
+    height: 2em;
+    padding-top:2em;
+}
+
+chartSize {
+    /*style ="width:710px;height:300px"*/
+    width: 710px;
+    height:300px;
+}
+.row {
+    justify-content: center;
+    width:auto;
+    padding-bottom:8em;
+}
+@media only screen and (max-width: 600px) {
+   
+
+    .chartSize {
+        width: 325px;
+        height: 300px;
+    }
+    
+}
+
+/*surveys page*/
+
+.surveysTitle {
+    text-align: center;
+}
+
+.createSurveyButton {
+    text-align: center;
+}
+.surveysHeader {
+    font-size: x-large;
+    text-align: center;
+}
+
+.surveysPublished {
+    text-align:center;
+    padding: 1em;
+}
+
+.table {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin:2em;
+}
+
+.surveysContent {
+    margin: 2em;
+    background-color: whitesmoke;
+    width: 400px;
+    border-radius: 5px;
+    padding: 2.3em;
+}
+
+.surveySurveyButton {
+    background-color: #1C1F33;
+    margin:.2em;
+}

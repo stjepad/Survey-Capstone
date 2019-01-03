@@ -4,19 +4,20 @@
 @{
     ViewData["Title"] = "AnonymousSurvey";
 }
-
-<h2>Anonymous Survey</h2>
-        <div>
-            <form asp-action="AnonymousSurvey" asp-route-id="@Model.Survey.SurveyId">
-                @for (var i = 0; i < Model.Questions.Count; i++)
-                {
-                    <h4>@Model.Questions[i].Content</h4>
-                    <select asp-for="@Model.Answers[i].AnswerId" class="form-control"
-                            asp-items="@(new SelectList(Model.Questions[i].Answers, "AnswerId", "Content"))"></select>
-                }
-                <button type="submit" class="btn btn-primary">Submit Survey</button>
-            </form>
-        </div>
+<div class="anonymousSurveyContainer">
+    <h3>@Model.Survey.Name</h3>
+    <div>
+        <form asp-action="AnonymousSurvey" asp-route-id="@Model.Survey.SurveyId">
+            @for (var i = 0; i < Model.Questions.Count; i++)
+            {
+                <h5>@Model.Questions[i].Content</h5>
+                <select asp-for="@Model.Answers[i].AnswerId" class="form-control"
+                        asp-items="@(new SelectList(Model.Questions[i].Answers, "AnswerId", "Content"))"></select>
+            }
+            <button type="submit" class="btn btn-primary anonymousSurveyButton">Submit Survey</button>
+        </form>
+    </div>
+</div>
     @*@
         HARD WAY: works
         <div>
