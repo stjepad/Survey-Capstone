@@ -270,7 +270,59 @@ namespace SurveyApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var survey = await _context.Surveys.FindAsync(id);
+
+            var survey = await _context.Surveys
+                .Include(s => s.SurveyInstances)
+                    .ThenInclude(si => si.AnswersSurveyInstances)
+                .Include(s => s.Questions)
+                    .ThenInclude(q => q.Answers)
+
+                .SingleOrDefaultAsync(s => s.SurveyId == id);
+
+            foreach (SurveyInstance si in survey.SurveyInstances)
+            {
+                foreach (
+                    AnswerSurveyInstance asi in si.AnswersSurveyInstances)
+                {
+                    _context.Remove(asi);
+                }
+                _context.Remove(si);
+            }
+
+            foreach (Question q in survey.Questions)
+            {
+                foreach (
+                    Answer a in q.Answers
+                    )
+                {
+                    _context.Remove(a);
+                }
+                _context.Remove(q);
+            }
+
+
+
+            _context.Surveys.Remove(survey);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Surveys");
+
+
+            //var question = await _context.Questions.Include(q => q.Answers).Include(q => q.Survey).SingleOrDefaultAsync(q => q.QuestionId == id);
+            //foreach (Answer answer in question.Answers)
+            //{
+            //    _context.Remove(answer);
+            //}
+
+
+            //var Survey = await _context.Surveys.Include(q => q.Questions).SingleOrDefaultAsync(q => q.SurveyId == id);
+            //foreach (Question question1 in Survey.Questions)
+            //{
+            //    _context.Remove(question1);
+            //}
+
+
+
+            var survey1 = await _context.Surveys.FindAsync(id);
             _context.Surveys.Remove(survey);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

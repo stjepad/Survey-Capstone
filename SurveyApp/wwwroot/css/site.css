@@ -215,9 +215,14 @@ chartSize {
     width: 400px;
     border-radius: 5px;
     padding: 2.3em;
+    text-align:center;
 }
 
+.surveySurveyFormButton {
+
+text-align:center;
+}
 .surveySurveyButton {
     background-color: #1C1F33;
-    margin:.2em;
+    margin: .2em;
 }
