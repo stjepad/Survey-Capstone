@@ -32,21 +32,30 @@
             <div class="surveysHeader">
                 @Html.DisplayFor(modelItem => item.Name)
             </div>
-            <div class="surveysPublished">
-                @*@Html.DisplayFor(modelItem => item.Published)*@
-                @*<a asp-action="Publish" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Publish</a>*@
-                <form asp-controller="Surveys" asp-action="Publish" asp-route-id="@item.SurveyId">
-                    <button type="submit" class="btn">Publish</button>
-                </form>
-            </div>
             <div>
                 @*@Html.DisplayFor(modelItem => item.User.FullName)*@
             </div>
             <div>
-                <a asp-action="Edit" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Edit</a> 
-                <a asp-action="Delete" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Delete</a> 
-                <a asp-action="Details" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Q & A</a> 
-                <a asp-action="SurveyDetails" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Survey Results</a>
+
+                @if (item.Published == false)
+                {
+                    <div class="surveysPublished">
+                        @*@Html.DisplayFor(modelItem => item.Published)*@
+                        @*<a asp-action="Publish" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Publish</a>*@
+                        <form asp-controller="Surveys" asp-action="Publish" asp-route-id="@item.SurveyId">
+                            <button type="submit" class="btn btn-info surveySurveyButton">Publish</button>
+                        </form>
+                    </div>
+                    <a asp-action="Edit" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Edit</a>
+                    <a asp-action="Details" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Q & A</a>
+                    <a asp-action="Delete" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Delete</a>
+                }
+                else
+                {
+
+                    <a asp-action="Delete" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Delete</a>
+                    <a asp-action="SurveyDetails" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Survey Results</a>
+                }
             </div>
         </div>
 }
