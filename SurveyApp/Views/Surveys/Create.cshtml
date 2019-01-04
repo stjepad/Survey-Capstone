@@ -1,4 +1,10 @@
-﻿@model SurveyApp.Models.Survey
+﻿@*Computer settings for appsettings.json*@
+@*"Server=DESKTOP-VUH9TGJ\\SQLEXPRESS;database=SurveyApp;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"*@
+
+@*Azure settings for appsettings.json*@
+@*"DefaultConnection": "Server=tcp:bloopbloop.database.windows.net,1433;Initial Catalog=SurveyApp;Persist Security Info=False;User ID={Ds2q88};Password={Dejanst1988!!!};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"*@
+
+@model SurveyApp.Models.Survey
 
 @{
     ViewData["Title"] = "Create";
@@ -24,10 +30,10 @@
                     </label>
                 </div>
             </div>
-                
+
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

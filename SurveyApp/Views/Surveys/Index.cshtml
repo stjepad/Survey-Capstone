@@ -34,9 +34,10 @@
             </div>
             <div class="surveysPublished">
                 @*@Html.DisplayFor(modelItem => item.Published)*@
-                @Html.CheckBoxFor(modelItem => item.Published)
-
-                @Html.DisplayNameFor(model => model.Published)
+                @*<a asp-action="Publish" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Publish</a>*@
+                <form asp-controller="Surveys" asp-action="Publish" asp-route-id="@item.SurveyId">
+                    <button type="submit" class="btn">Publish</button>
+                </form>
             </div>
             <div>
                 @*@Html.DisplayFor(modelItem => item.User.FullName)*@

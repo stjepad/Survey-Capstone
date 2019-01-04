@@ -41,7 +41,7 @@ namespace SurveyApp.Controllers
             {
                 return NotFound();
             }
-
+            
             var survey = await _context.Surveys
                 
                 .Include(s => s.User)
@@ -175,6 +175,75 @@ namespace SurveyApp.Controllers
             //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
             return View(survey);
+        }
+
+        // GET: Surveys/publish/5
+        //public async Task<IActionResult> Publish(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var survey = await _context.Surveys.FindAsync(id);
+        //    if (survey == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        Survey surveys = new Survey()
+        //        {
+        //           Published = true
+
+        //        };
+
+        //        try
+        //        {
+        //            _context.Update(survey);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!SurveyExists(survey.SurveyId))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
+        //    return View(survey);
+        //}
+
+        public async Task<IActionResult> Publish(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Survey survey = await _context.Surveys.FindAsync(id);
+            if (survey == null)
+            {
+                return NotFound();
+            }
+
+            survey.Published = true;
+
+            _context.Update(survey);
+
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Surveys/Delete/5
