@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,14 @@ namespace SurveyApp.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public AnswersController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
+        public AnswersController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -70,19 +77,26 @@ namespace SurveyApp.Controllers
         }
 
         // GET: Answers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            ApplicationUser user = await GetCurrentUserAsync();
+
+            var answer = await _context.Answers
+                .Include(a => a.Question)
+                    .ThenInclude(q => q.Survey)
+                .SingleOrDefaultAsync(a => a.AnswerId == id);
+
+            if (user.Id != answer.Question.Survey.UserId)
             {
                 return NotFound();
             }
 
-            var answer = await _context.Answers.FindAsync(id);
+
             if (answer == null)
             {
                 return NotFound();
             }
-            ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "Content", answer.QuestionId);
+           
             return View(answer);
         }
 
@@ -91,23 +105,28 @@ namespace SurveyApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AnswerId,Content,QuestionId")] Answer answer)
+        public async Task<IActionResult> Edit(int id, Answer Answer)
         {
-            if (id != answer.AnswerId)
-            {
-                return NotFound();
-            }
+
+            ModelState.Remove("QuestionId");
 
             if (ModelState.IsValid)
             {
+                Answer answer = await _context.Answers.Include(a => a.Question).SingleOrDefaultAsync(a => a.AnswerId == id);
+
                 try
                 {
+
+                    answer.Content = Answer.Content;
+
                     _context.Update(answer);
                     await _context.SaveChangesAsync();
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AnswerExists(answer.AnswerId))
+                    if (!AnswerExists(id))
                     {
                         return NotFound();
                     }
@@ -116,10 +135,11 @@ namespace SurveyApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Details", "Surveys", new { id = answer.Question.SurveyId });
             }
-            ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "Content", answer.QuestionId);
-            return View(answer);
+           
+            return View(Answer);
         }
 
         // GET: Answers/Delete/5

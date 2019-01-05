@@ -28,7 +28,7 @@
     </thead>*@
     
 @foreach (var item in Model) {
-        <div class="surveysContent">
+        <div class="surveysContent effect7">
             <div class="surveysHeader">
                 @Html.DisplayFor(modelItem => item.Name)
             </div>
@@ -43,7 +43,7 @@
                         @*@Html.DisplayFor(modelItem => item.Published)*@
                         @*<a asp-action="Publish" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Publish</a>*@
                         <form asp-controller="Surveys" asp-action="Publish" asp-route-id="@item.SurveyId" class="surveySurveyFormButton">
-                            <button type="submit" class="btn btn-info surveySurveyButton">Publish</button>
+                            <button type="submit" class="btn btn-info surveyPublishButton">Publish</button>
                         </form>
                    
                     <a asp-action="Edit" class="btn btn-info surveySurveyButton" asp-route-id="@item.SurveyId">Edit</a>

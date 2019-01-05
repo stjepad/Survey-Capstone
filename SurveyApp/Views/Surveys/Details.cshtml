@@ -3,43 +3,42 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="surveysPublished">
+    <h2>Questions & Answers</h2>
 
-<h2>Q & A</h2>
-
-<p>
-    <a asp-action="Create" asp-controller="Questions" asp-route-id="@Model.SurveyId">Create New</a>
-</p>
-
-<div>
-    <h4>Survey</h4>
-  
+    <p>
+        <a asp-action="Create" asp-controller="Questions" asp-route-id="@Model.SurveyId" class="btn btn-info surveySurveyButton">Create New</a>
+    </p>
 </div>
 
 
-<div>
+
+<div class="qnaContainer">
     @foreach (var item in Model.Questions)
     {
         
-            <dt>
-                @Html.DisplayFor(modelItem => item.Content) 
+    <div class="qnaQnaContainer effect7">
+        <div class="qnaQuestionContainer">
+            @Html.DisplayFor(modelItem => item.Content)
 
 
-                <a asp-action="Edit" asp-controller="Questions" asp-route-id="@item.QuestionId">Edit</a> |
-                <a asp-action="Delete" asp-controller="Questions" asp-route-id="@item.QuestionId">Delete</a>
-            </dt>
-        
-
-        <ol>
-        @foreach (var items in item.Answers)
-        {
-       
-            <li>
-                @Html.DisplayFor(modelItem => items.Content)
+            <a asp-action="Edit" asp-controller="Questions" asp-route-id="@item.QuestionId">Edit</a> |
+            <a asp-action="Delete" asp-controller="Questions" asp-route-id="@item.QuestionId">Delete</a>
+        </div>
 
 
-                <a asp-action="Edit" asp-controller="Answers" asp-route-id="@items.AnswerId">Edit</a>
-            </li>
-        }
+        <ol class="qnaOl">
+            @foreach (var items in item.Answers)
+            {
+
+                <li class="qnaAnswers">
+                    @Html.DisplayFor(modelItem => items.Content)
+
+
+                    <a asp-action="Edit" asp-controller="Answers" asp-route-id="@items.AnswerId">Edit</a>
+                </li>
+            }
         </ol>
+    </div>
     }
 </div>
