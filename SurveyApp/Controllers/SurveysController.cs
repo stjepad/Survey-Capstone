@@ -18,8 +18,6 @@ namespace SurveyApp.Controllers
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-
         public SurveysController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager)
         {
@@ -27,11 +25,16 @@ namespace SurveyApp.Controllers
             _context = context;
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Surveys.Include(s => s.User);
-            return View(await applicationDbContext.ToListAsync());
+            ApplicationUser user = await GetCurrentUserAsync();
+
+            List<Survey> surveys = await _context.Surveys.Where(s => s.UserId == user.Id).ToListAsync();
+
+            return View(surveys);
         }
 
         // GET: Surveys/Details/5
@@ -94,7 +97,6 @@ namespace SurveyApp.Controllers
         // GET: Surveys/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
@@ -103,39 +105,44 @@ namespace SurveyApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SurveyId,Name,Published,UserId")] Survey survey)
+        public async Task<IActionResult> Create(Survey Survey)
         {
 
             ModelState.Remove("User");
+            ModelState.Remove("UserId");
+
             if (ModelState.IsValid)
             {
 
-                survey.User = await GetCurrentUserAsync();
+                Survey.User = await GetCurrentUserAsync();
+                Survey.UserId = Survey.User.Id;
 
-                _context.Add(survey);
+                _context.Add(Survey);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            return View(survey);
+            return View(Survey);
         }
 
 
 
         // GET: Surveys/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            ApplicationUser user = await GetCurrentUserAsync();
+
+            var survey = await _context.Surveys.FindAsync(id);
+
+            if (user.Id != survey.UserId)
             {
                 return NotFound();
             }
+           
 
-            var survey = await _context.Surveys.FindAsync(id);
             if (survey == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
             return View(survey);
         }
 
@@ -144,24 +151,29 @@ namespace SurveyApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SurveyId,Name,Published,UserId")] Survey survey)
+        public async Task<IActionResult> Edit(int id, Survey Survey)
         {
-            if (id != survey.SurveyId)
-            {
-                return NotFound();
-            }
+
+
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
 
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    Survey survey = await _context.Surveys.FindAsync(id);
+
+                    survey.Name = Survey.Name;
+
                     _context.Update(survey);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SurveyExists(survey.SurveyId))
+                    if (!SurveyExists(id))
                     {
                         return NotFound();
                     }
@@ -172,56 +184,11 @@ namespace SurveyApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            return View(survey);
+
+            return View(Survey);
         }
 
-        // GET: Surveys/publish/5
-        //public async Task<IActionResult> Publish(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var survey = await _context.Surveys.FindAsync(id);
-        //    if (survey == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-
-        //        Survey surveys = new Survey()
-        //        {
-        //           Published = true
-
-        //        };
-
-        //        try
-        //        {
-        //            _context.Update(survey);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!SurveyExists(survey.SurveyId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-        //    return View(survey);
-        //}
+        //publish update on main survey page.
 
         public async Task<IActionResult> Publish(int id)
         {

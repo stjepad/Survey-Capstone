@@ -30,8 +30,10 @@ namespace SurveyApp.Controllers
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Surveys.Include(s => s.User);
-            return View(await applicationDbContext.ToListAsync());
+            List<Survey> surveys = await _context.Surveys.Where(s => s.Published == true).ToListAsync();
+
+            //var applicationDbContext = _context.Surveys.Include(s => s.User);
+            return View(surveys);
         }
 
         // GET: take an annonymous survey

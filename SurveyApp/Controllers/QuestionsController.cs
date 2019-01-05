@@ -162,19 +162,25 @@ namespace SurveyApp.Controllers
         }
 
         // GET: Questions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            ApplicationUser user = await GetCurrentUserAsync();
+
+            var question = await _context.Questions
+                .Include(q => q.Survey)
+                .SingleOrDefaultAsync(q => q.QuestionId == id);
+
+            if (user.Id != question.Survey.UserId)
             {
                 return NotFound();
             }
 
-            var question = await _context.Questions.FindAsync(id);
             if (question == null)
             {
                 return NotFound();
             }
-            ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "Name", question.SurveyId);
+
+
             return View(question);
         }
 
@@ -183,23 +189,24 @@ namespace SurveyApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("QuestionId,Content,SurveyId")] Question question)
+        public async Task<IActionResult> Edit(int id, Question Question)
         {
-            if (id != question.QuestionId)
-            {
-                return NotFound();
-            }
+            ModelState.Remove("SurveyId");
 
             if (ModelState.IsValid)
             {
+                    Question question = await _context.Questions.FindAsync(id);
                 try
                 {
+
+                    question.Content = Question.Content;
+
                     _context.Update(question);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestionExists(question.QuestionId))
+                    if (!QuestionExists(id))
                     {
                         return NotFound();
                     }
@@ -208,10 +215,9 @@ namespace SurveyApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Surveys", new { id = question.SurveyId });
             }
-            ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "Name", question.SurveyId);
-            return View(question);
+            return View(Question);
         }
 
         // GET: Questions/Delete/5
