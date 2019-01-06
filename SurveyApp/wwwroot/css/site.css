@@ -134,6 +134,10 @@ margin-bottom: 1em;
 
 /*results page*/
 
+.no-top-margin {
+    margin-top: 0;
+}
+
 .resultsHeader {
     text-align:center;
 }
@@ -159,8 +163,7 @@ margin-bottom: 1em;
 .questionContent {
     justify-content: center;
     display: flex;
-    height: 2em;
-    padding-top:2em;
+   
 }
 
 chartSize {
@@ -168,17 +171,21 @@ chartSize {
     width: 710px;
     height:300px;
 }
+
+.chartContainerContainer {
+padding-bottom: 2em;
+}
 .row {
     justify-content: center;
-    width:auto;
-    padding-bottom:8em;
+    width: auto;
+    padding-bottom: 8em;
 }
 @media only screen and (max-width: 600px) {
    
 
     .chartSize {
         width: 325px;
-        height: 300px;
+        height: 200px;
     }
     
 }
@@ -266,6 +273,7 @@ height:3.5em;
 
 .qnaAnswers{
     padding:1em;
+    
 }
 
 .qnaQuestionEdit {
