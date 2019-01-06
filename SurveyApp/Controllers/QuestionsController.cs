@@ -61,6 +61,8 @@ namespace SurveyApp.Controllers
 
             CreateQuestionViewModel viewmodel = new CreateQuestionViewModel();
 
+            viewmodel.Survey = survey;
+
             if (survey.UserId != user.Id)
             {
                 return RedirectToAction("Index", "Home");

@@ -4,53 +4,54 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
 
-@*<h4>Question</h4>*@
-<hr />
-<div class="row">
 
-    @*Question*@
-    <div class="col-md-4">
+
+<div class="qnaContainer">
+<h2>Create one set of question and answers for this survey</h2>
+
+<div class="qnaQnaContainer effect7">
         <form asp-action="Create">
+    <div class="qnaQuestionContainer">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Question.Content" class="control-label">Question</label>
-                <input asp-for="Question.Content" class="form-control" />
+            <div class="form-group qnaAnswersInput">
+                <h4 class="qnaLabel"> Question</h4>
+                <input asp-for="Question.Content " class="form-control" />
                 <span asp-validation-for="Question.Content" class="text-danger"></span>
             </div>
-
-
-            <div class="form-group">
-                <label asp-for="AnswerContents" class="control-label">Answer</label>
-                <input asp-for="AnswerContents" class="form-control" />
-                <span asp-validation-for="AnswerContents" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnswerContents" class="control-label">Answer</label>
-                <input asp-for="AnswerContents" class="form-control" />
-                <span asp-validation-for="AnswerContents" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnswerContents" class="control-label">Answer</label>
-                <input asp-for="AnswerContents" class="form-control" />
-                <span asp-validation-for="AnswerContents" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnswerContents" class="control-label">Answer</label>
-                <input asp-for="AnswerContents" class="form-control" />
-                <span asp-validation-for="AnswerContents" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
     </div>
+    
+
+        <div class="form-group qnaAnswersInput">
+            <h4 class="qnaLabel1">Answer</h4>
+            <input asp-for="AnswerContents" class="form-control" />
+            <span asp-validation-for="AnswerContents" class="text-danger"></span>
+        </div>
+        <div class="form-group qnaAnswersInput">
+            <h4 class="qnaLabel1"> Answer</h4>
+            <input asp-for="AnswerContents" class="form-control" />
+            <span asp-validation-for="AnswerContents" class="text-danger"></span>
+        </div>
+        <div class="form-group qnaAnswersInput">
+            <h4 class="qnaLabel1"> Answer</h4>
+            <input asp-for="AnswerContents" class="form-control" />
+            <span asp-validation-for="AnswerContents" class="text-danger"></span>
+        </div>
+        <div class="form-group qnaAnswersInput">
+            <h4 class="qnaLabel1"> Answer</h4>
+            <input asp-for="AnswerContents" class="form-control" />
+            <span asp-validation-for="AnswerContents" class="text-danger"></span>
+        </div>
+        <div class="form-group centerCreateButtons">
+            <input type="submit" value="Create" class="btn btn-info surveySurveyButton" />
+            <a asp-action="Details" asp-controller="Surveys" asp-route-id="@Model.Survey.SurveyId" class="btn btn-info surveySurveyButton">Back to List</a>
+        </div>
+    </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

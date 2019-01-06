@@ -4,31 +4,33 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<div class="qnaContainer">
+  
+   
 
-<h4>Answer</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AnswerId" />
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-         
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default"  />
-            </div>
-        </form>
+
+    <div class="surveyCreateContainer effect7">
+        <div>
+        <h3 class="surveysPublished">Edit your answer</h3>
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AnswerId" />
+                <div class="form-group">
+
+                    <input asp-for="Content" class="form-control" />
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-info surveySurveyButton" />
+        <a asp-action="Details" asp-controller="Surveys" asp-route-id="@Model.Question.SurveyId" class="btn btn-info surveySurveyButton">Back</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 <div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -202,17 +202,22 @@ chartSize {
     padding: 1em;
 }
 
+.surveyDeleteName {
+    padding:1em;
+    font-weight: bold;
+}
+
 .table {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin:2em;
 }
 
 .surveysContent {
     margin: 2em;
     background-color: whitesmoke;
     width: 400px;
+    height: 250px;
     border-radius: 5px;
     padding: 2.3em;
     text-align:center;
@@ -263,16 +268,55 @@ height:3.5em;
     padding:1em;
 }
 
+.qnaQuestionEdit {
+color:white;
+align-items:right;
+font-size: 1.5em;
+padding-left: 1em;
+}
+
+.qnaQuestionDelete {
+    color: white;
+    font-size: 1.5em;
+    padding-left: 1em;
+}
 .qnaQuestionContainer {
     padding: 1em;
     background-color: #1C1F33;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     color: white;
+    display: flex;
+    justify-content: space-between;
 }
 
-/*survey create*/
+.qnaAnswerEdit {
+    padding-left: 1em;
+}
 
+.qnaAnswersInput {
+width:95%;
+display:flex;
+justify-content:center;
+}
+
+.qnaLabel {
+    margin: auto;
+    padding-right: 1em;
+
+}
+
+.qnaLabel1 {
+    margin: auto;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+.centerCreateButtons {
+   display:flex;
+   justify-content:center;
+}
+/*survey create*/
 .surveyCreateContainer {
     margin: 2em;
     background-color: whitesmoke;

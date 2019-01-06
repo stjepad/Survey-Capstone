@@ -4,30 +4,28 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
 
-<h4>Question</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+
+<div class="qnaContainer">
+    <div class="surveyCreateContainer effect7">
+<h2 class="surveysPublished">Edit your question</h2>
+    <div>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="QuestionId" />
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
+
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-info surveySurveyButton" />
+                <a asp-action="Details" asp-controller="Surveys" asp-route-id="@Model.SurveyId" class="btn btn-info surveySurveyButton">Back</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
