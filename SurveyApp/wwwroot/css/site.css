@@ -384,3 +384,17 @@ justify-content:center;
         -moz-box-shadow: 0 0 20px rgba(49, 176, 213, 0.8);
         box-shadow: 0 0 20px rgba(49, 176, 213, 0.8);
     }
+
+    /*login view*/
+.recapLogoName {
+    display: flex;
+    width: 46.2%;
+    height: 46.2%;
+    margin-top: 2em;
+    border-radius: 5px;
+}
+
+.loginContainer {
+display:flex;
+flex-wrap: wrap;
+}
