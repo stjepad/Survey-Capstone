@@ -394,6 +394,12 @@ justify-content:center;
     border-radius: 5px;
 }
 
+.recapLogo {
+height: 37px;
+width: 37px;
+margin: 7px;
+}
+
 .loginContainer {
 display:flex;
 flex-wrap: wrap;
