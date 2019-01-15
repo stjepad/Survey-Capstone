@@ -57,12 +57,13 @@ body {
     background-color: #1C1F33;
     /*#F7DD72;*/
     width: 350px;
-    height: 60px;
+    min-height: 60px;
     font-size: x-large;
     text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.4);
     text-align: center;
     font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
     font-weight: bold;
+    white-space: normal;
 }
 
 .body-content {
@@ -224,7 +225,7 @@ padding-bottom: 2em;
     margin: 2em;
     background-color: whitesmoke;
     width: 400px;
-    height: 250px;
+    min-height: 250px;
     border-radius: 5px;
     padding: 2.3em;
     text-align:center;
