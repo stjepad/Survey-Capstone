@@ -4,10 +4,10 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>@ViewData["Title"]</h2>
 
-<div class="row">
-    <div class="col-md-4">
+    <div class="qnaContainer">
+<div class="surveyCreateContainer effect7">
+<h2>@ViewData["Title"]</h2>
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Create a new account.</h4>
             <hr />
@@ -34,11 +34,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
+                <p>Required: One capital letter, one symbol, at least six characters</p>
                 <input asp-for="Input.Password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.ConfirmPassword"></label>
+                <p>Required: One capital letter, one symbol, at least six characters</p>
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
