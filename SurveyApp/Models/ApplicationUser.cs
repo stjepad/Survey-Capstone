@@ -20,8 +20,8 @@ namespace SurveyApp.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        //[Required]
-        //[Display(Name = "Company Name")]
+        [Required]
+        [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
         public virtual ICollection<Survey> Surveys { get; set; }
