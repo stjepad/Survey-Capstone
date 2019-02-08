@@ -247,8 +247,16 @@ height:3.5em;
     width: 120px;
 }
 
-/*q & a page*/
+.modal-footer .surveySurveyButton {
+    margin: 0 !important;
+}
 
+.sumbitAnswerCancel {
+    margin: .5em;
+    width: 120px;
+}
+
+/*q & a page*/
 .qnaContainer {
     /*background-color: whitesmoke;*/
     justify-content: center;
