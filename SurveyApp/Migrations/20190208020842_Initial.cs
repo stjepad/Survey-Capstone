@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SurveyApp.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,8 +42,7 @@ namespace SurveyApp.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
-                    CompanyName = table.Column<string>(nullable: false)
+                    LastName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -265,13 +264,13 @@ namespace SurveyApp.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "CompanyName", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "a7fc0ad4-a3a7-40dd-b97f-79b2a9ed0ccf", 0, "Tailgate Brewery", "c43aa331-71f7-4d3f-a3db-012d81cb55a7", "admin@admin.com", true, "admin", "admin", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEOhCLm7cgKKQ8bXsEvLYuow4z8Agimrnp5dQq+YtywQWDau3fBZtUxHPbhh0mV12kw==", null, false, "03d3b1a8-1749-4d40-b255-1bf9c45c7bac", false, "admin@admin.com" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "d70dec42-468c-4748-a981-7b32754b31a6", 0, "bd5d0675-b04e-497e-9260-1c1e65a0cdd3", "admin@admin.com", true, "admin", "admin", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEOUtge/UNHbnv2B2j6QVv39TD8sXWE5HX2zQIh6WaHZ1Yyoylzdd7pnCDja71w08Cg==", null, false, "fe37b9a5-56fb-4c34-9b1e-eda435fe294b", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Surveys",
                 columns: new[] { "SurveyId", "Name", "Published", "UserId" },
-                values: new object[] { 1, "Weekend FeedbacK", false, "a7fc0ad4-a3a7-40dd-b97f-79b2a9ed0ccf" });
+                values: new object[] { 1, "Weekend FeedbacK", false, "d70dec42-468c-4748-a981-7b32754b31a6" });
 
             migrationBuilder.InsertData(
                 table: "Questions",

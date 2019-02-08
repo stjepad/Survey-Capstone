@@ -69,7 +69,7 @@ namespace SurveyApp.Data
             {
                 FirstName = "admin",
                 LastName = "admin",
-                CompanyName = "Tailgate Brewery",
+                //CompanyName = "Tailgate Brewery",
                 UserName = "admin@admin.com",
                 NormalizedUserName = "ADMIN@ADMIN.COM",
                 Email = "admin@admin.com",
