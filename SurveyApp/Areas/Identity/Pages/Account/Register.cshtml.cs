@@ -48,9 +48,9 @@ namespace SurveyApp.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            [Required]
-            [Display(Name = "Company Name")]
-            public string CompanyName { get; set; }
+            //[Required]
+            //[Display(Name = "Company Name")]
+            //public string CompanyName { get; set; }
 
             [Required]
             [EmailAddress]
@@ -83,7 +83,7 @@ namespace SurveyApp.Areas.Identity.Pages.Account
                 {
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    CompanyName = Input.CompanyName,
+                    //CompanyName = Input.CompanyName,
                     UserName = Input.Email,
                     Email = Input.Email
                 };

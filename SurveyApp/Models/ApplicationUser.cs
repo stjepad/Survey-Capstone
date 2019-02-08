@@ -22,7 +22,7 @@ namespace SurveyApp.Models
 
         //[Required]
         //[Display(Name = "Company Name")]
-        public string CompanyName { get; set; }
+        //public string CompanyName { get; set; }
 
         public virtual ICollection<Survey> Surveys { get; set; }
 

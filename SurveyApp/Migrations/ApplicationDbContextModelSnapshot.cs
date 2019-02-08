@@ -204,9 +204,6 @@ namespace SurveyApp.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("CompanyName")
-                        .IsRequired();
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -257,7 +254,7 @@ namespace SurveyApp.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "a7fc0ad4-a3a7-40dd-b97f-79b2a9ed0ccf", AccessFailedCount = 0, CompanyName = "Tailgate Brewery", ConcurrencyStamp = "c43aa331-71f7-4d3f-a3db-012d81cb55a7", Email = "admin@admin.com", EmailConfirmed = true, FirstName = "admin", LastName = "admin", LockoutEnabled = false, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAEOhCLm7cgKKQ8bXsEvLYuow4z8Agimrnp5dQq+YtywQWDau3fBZtUxHPbhh0mV12kw==", PhoneNumberConfirmed = false, SecurityStamp = "03d3b1a8-1749-4d40-b255-1bf9c45c7bac", TwoFactorEnabled = false, UserName = "admin@admin.com" }
+                        new { Id = "d70dec42-468c-4748-a981-7b32754b31a6", AccessFailedCount = 0, ConcurrencyStamp = "bd5d0675-b04e-497e-9260-1c1e65a0cdd3", Email = "admin@admin.com", EmailConfirmed = true, FirstName = "admin", LastName = "admin", LockoutEnabled = false, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAEOUtge/UNHbnv2B2j6QVv39TD8sXWE5HX2zQIh6WaHZ1Yyoylzdd7pnCDja71w08Cg==", PhoneNumberConfirmed = false, SecurityStamp = "fe37b9a5-56fb-4c34-9b1e-eda435fe294b", TwoFactorEnabled = false, UserName = "admin@admin.com" }
                     );
                 });
 
@@ -308,7 +305,7 @@ namespace SurveyApp.Migrations
                     b.ToTable("Surveys");
 
                     b.HasData(
-                        new { SurveyId = 1, Name = "Weekend FeedbacK", Published = false, UserId = "a7fc0ad4-a3a7-40dd-b97f-79b2a9ed0ccf" }
+                        new { SurveyId = 1, Name = "Weekend FeedbacK", Published = false, UserId = "d70dec42-468c-4748-a981-7b32754b31a6" }
                     );
                 });
 
@@ -383,7 +380,7 @@ namespace SurveyApp.Migrations
             modelBuilder.Entity("SurveyApp.Models.Answer", b =>
                 {
                     b.HasOne("SurveyApp.Models.Question", "Question")
-                        .WithMany()
+                        .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -404,7 +401,7 @@ namespace SurveyApp.Migrations
             modelBuilder.Entity("SurveyApp.Models.Question", b =>
                 {
                     b.HasOne("SurveyApp.Models.Survey", "Survey")
-                        .WithMany()
+                        .WithMany("Questions")
                         .HasForeignKey("SurveyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -420,7 +417,7 @@ namespace SurveyApp.Migrations
             modelBuilder.Entity("SurveyApp.Models.SurveyInstance", b =>
                 {
                     b.HasOne("SurveyApp.Models.Survey", "Survey")
-                        .WithMany()
+                        .WithMany("SurveyInstances")
                         .HasForeignKey("SurveyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
